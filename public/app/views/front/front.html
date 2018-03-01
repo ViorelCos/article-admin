@@ -1,0 +1,30 @@
+<div class="panel panel-info" ng-if="!mainfront.draft">
+
+    <!-- Default panel contents -->
+    <div class="panel-heading" style="color: white; text-align: center; background-color:darkcyan;"><strong>Slides</strong></div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"><strong>ID</strong></th>
+                    <th scope="col"><strong>Name</strong></th>
+                    <th scope="col"><strong>Text</strong></th>
+                    <th scope="col"><strong>image</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="slide in mainfront.slides">
+                    <th scope="row">{{ slide.id}}</th>
+                    <td>{{ slide.name }}</td>
+                    <td>{{ slide.text }}</td>
+                    <td>{{ slide.imagekey }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div ng-if="mainfront.draft">
+    <h1>Sorry, This Page is allowed by Administrator.</h1>
+</div>

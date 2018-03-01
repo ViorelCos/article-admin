@@ -1,0 +1,177 @@
+<!-- Heading -->
+<div class="row text-center">
+    <div class="container">
+        <h2 class="section-heading">Article Management</h2>
+        <h3 class="section-subheading text-muted">All Images stores on Amazon S3.</h3>
+    </div>
+</div>
+<!-- Heading -->
+
+<!-- Loading Icon (Bootstrap) -->
+<div class="jumbotron text-center" ng-if="article.loading">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Updating....</p>
+</div>
+<!-- Loading Icon (Bootstrap) -->
+
+<!-- Custom Messages -->
+<div class="row show-hide-message" ng-if="article.successMsg || article.errorMsg">
+    <div ng-class="alert">{{ article.successMsg || article.errorMsg }}</div>
+</div>
+<!-- Custom Messages -->
+
+<button ng-if="!article.isArticleTable" type="submit" class="btn btn-success" data-dismiss="modal" ng-click="article.onCreateSlideModal()">create Slide</button>
+<button ng-if="article.isArticleTable" type="submit" class="btn btn-success" data-dismiss="modal" ng-click="article.onCreateArticleModal()">create Article</button>
+<button ng-if="!article.isArticleTable" type="submit" class="btn btn-success" data-dismiss="modal" ng-click="article.onShowArticles()">Go Article</button>
+
+<!-- slideshow table -->
+<div class="panel panel-info" ng-if="!article.isArticleTable">
+
+    <!-- Default panel contents -->
+    <div class="panel-heading" style="color: white; text-align: center; background-color:darkcyan;"><strong>Slides</strong></div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"><strong>ID</strong></th>
+                    <th scope="col"><strong>Name</strong></th>
+                    <th scope="col"><strong>image</strong></th>
+                    <th scope="col"><strong>Text</strong></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="slide in article.slides">
+                    <th scope="row">{{ slide.id}}</th>
+                    <td>{{ slide.name }}</td>
+                    <td>{{ slide.imagekey }}</td>
+                    <td>{{ slide.text }}</td>
+                    <td ng-click = "article.onSlideEdit(slide);">
+                        <button><i class="glyphicon glyphicon-pencil"></i></button>
+                    </td>
+                    <td ng-click = "article.onSlideDelete(slide);">
+                        <button><i class="glyphicon glyphicon-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- article table -->
+<div class="panel panel-info" ng-if="article.isArticleTable">
+
+    <!-- Default panel contents -->
+    <div class="panel-heading" style="color: white; text-align: center; background-color:darkcyan;"><strong>Articles</strong></div>
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"><strong>Title</strong></th>
+                    <th scope="col"><strong>Keywords</strong></th>
+                    <th scope="col"><strong>Published Date</strong></th>
+                    <th scope="col"><strong>Tags</strong></th>
+                    <th scope="col"><strong>Meta Description</strong></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="articleItem in article.articles">
+                    <th scope="row">{{ articleItem.title}}</td>
+                    <td>{{ articleItem.keywords }}</td>
+                    <td>{{ articleItem.createdOn }}</td>
+                    <td>{{ articleItem.tags }}</td>
+                    <td>{{ articleItem.description }}</td>
+                    <td ng-click = "article.onShowSlides(articleItem);">
+                        <button><i class="glyphicon glyphicon-th-list"></i></button>
+                    </td>
+                    <td ng-click = "article.onEditArticleModal(articleItem);">
+                        <button><i class="glyphicon glyphicon-pencil"></i></button>
+                    </td>
+                    <td ng-click = "article.onArticleDelete(articleItem);">
+                        <button><i class="glyphicon glyphicon-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="myModal1" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 ng-if="article.isArticleTable" class="modal-title">Edit Article</h4>
+                <h4 ng-if="!article.isArticleTable" class="modal-title">Edit Slide</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if ="article.isArticleTable">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-bookmark"></i></span>
+                        <input id="title" type="text" class="form-control" name="title" ng-model="article.newArticle.title" placeholder="Title">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-tags"></i></span>
+                        <input id="tags" type="text" class="form-control" name="tags" ng-model="article.newArticle.tags" placeholder="Tags">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+                        <input id="keyword" type="text" class="form-control" name="date" ng-model="article.newArticle.keywords" placeholder="Keywords">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+                        <input type="text" class="form-control" ng-model="article.newArticle.description" placeholder="Meta Description"/>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-magnet"></i></span>
+                        <input type="text" class="form-control" ng-model="article.newArticle.url" placeholder="Article Url"/>
+                    </div>
+                    <br>
+                    <div class="checkbox">
+                        <label><input id = "draft" type="checkbox" ng-model="article.newArticle.draft" value="true">Draft</label>
+                    </div>
+                </div>
+                <div ng-if ="!article.isArticleTable">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-bookmark"></i></span>
+                        <input type="number" class="form-control" name="id" ng-model="article.newSlide.id" placeholder="Number">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" class="form-control" name="name" ng-model="article.newSlide.name" placeholder="Name">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <!-- <input type="file" class = "file-upload-input" id="image_uploads" name="image_uploads" accept="image/*" multiple> -->
+                        <input id = "fileurl" type ="file" class = "file-upload-input" file-model = "myFile" accept="image/*" fileread/>
+                    </div>
+
+                </div>                    
+            </div>
+            <div class="modal-footer">
+                <div ng-if ="article.isArticleTable">
+                    <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="article.onArticleUpdate(article.newArticle)">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                <div ng-if ="!article.isArticleTable">
+                    <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="article.onSlideUpdate()">OK</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <br>
+                    <textarea style = "margin-top:10px" class="form-control" rows="3" cols="30" ng-model="article.newSlide.text" placeholder="Additional Info"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
